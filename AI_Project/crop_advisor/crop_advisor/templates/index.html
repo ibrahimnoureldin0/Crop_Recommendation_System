@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌾 Crop Advisor — مستشار المحاصيل الزراعية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ═══ ANIMATED SCENE ═══ -->
+<div class="scene">
+  <div class="sky-layer"></div>
+  <div class="stars"></div>
+  <div class="moon"></div>
+  <div class="fields"></div>
+</div>
+<div id="fireflies"></div>
+
+<!-- Wheat SVG -->
+<svg class="wheat-svg" viewBox="0 0 1200 220" preserveAspectRatio="none">
+  <rect x="0" y="160" width="1200" height="60" fill="#061508" opacity="0.9"/>
+  <g id="wg"></g>
+</svg>
+
+<!-- ═══ MAIN ═══ -->
+<div class="wrapper">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-emblem">🌾</div>
+    <h1>مستشار المحاصيل الزراعية</h1>
+    <p>أدخل خصائص التربة والمناخ للحصول على أفضل توصية زراعية</p>
+    <!-- Model badge -->
+    <div class="model-badge">
+      <span class="badge-dot"></span>
+      Random Forest &nbsp;·&nbsp; دقة {{ model_accuracy }}
+      &nbsp;·&nbsp; {{ n_samples|int }} عينة
+      &nbsp;·&nbsp; {{ n_classes }} محصول
+    </div>
+  </header>
+
+  <!-- Card -->
+  <main class="card">
+
+    <!-- Presets -->
+    <div class="section-title">جرب سيناريو جاهز</div>
+    <div class="presets" id="presets">
+      <button class="preset-btn" data-crop="rice">🌾 أرز</button>
+      <button class="preset-btn" data-crop="banana">🍌 موز</button>
+      <button class="preset-btn" data-crop="mango">🥭 مانجو</button>
+      <button class="preset-btn" data-crop="cotton">🌿 قطن</button>
+      <button class="preset-btn" data-crop="coffee">☕ قهوة</button>
+      <button class="preset-btn" data-crop="apple">🍎 تفاح</button>
+      <button class="preset-btn" data-crop="watermelon">🍉 بطيخ</button>
+      <button class="preset-btn" data-crop="grapes">🍇 عنب</button>
+    </div>
+
+    <!-- Inputs grid — built by JS using Flask meta data -->
+    <div class="section-title">خصائص التربة والمناخ</div>
+    <div class="inputs-grid" id="inputs-grid"></div>
+
+    <!-- Predict -->
+    <button class="predict-btn" id="predict-btn" onclick="submitPrediction()">
+      <span id="btn-text">🔍 &nbsp; ابحث عن أفضل محصول</span>
+      <span id="btn-loader" class="hidden">⟳ جاري التحليل...</span>
+    </button>
+
+    <!-- Error -->
+    <div class="error-box hidden" id="error-box"></div>
+
+    <!-- Result panel -->
+    <div class="result-panel hidden" id="result-panel">
+
+      <div class="result-hero">
+        <div class="crop-image-container">
+          <span id="crop-emoji" class="crop-fallback-emoji">🌱</span>
+          <img id="crop-img" src="" alt="" class="hidden">
+        </div>
+        <div class="result-info">
+          <div class="result-label">الأنسب لبيئتك</div>
+          <div class="result-crop-name" id="result-name">—</div>
+          <div class="result-crop-ar"   id="result-name-ar">—</div>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar">
+              <div class="confidence-fill" id="conf-fill" style="width:0%"></div>
+            </div>
+            <span class="confidence-text" id="conf-text">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 3 -->
+      <div class="top3" id="top3-container">
+        <div class="top3-title">أعلى التوصيات</div>
+      </div>
+
+      <!-- Ideal conditions stats -->
+      <div class="stats-row" id="stats-row"></div>
+
+    </div><!-- /result-panel -->
+
+  </main><!-- /card -->
+
+  <footer class="footer">
+    Flask + Random Forest · دقة {{ model_accuracy }} · CV {{ cv_mean }} ·
+    بناءً على {{ n_samples }} عينة زراعية · {{ n_classes }} نوع محصول
+  </footer>
+
+</div><!-- /wrapper -->
+
+<!-- Pass Flask data to JS -->
+<script>
+  const FEATURE_RANGES = {{ feature_ranges | tojson }};
+  const CROP_STATS     = {{ crop_stats     | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
