@@ -59,10 +59,3 @@ We compared multiple supervised and unsupervised algorithms to find the most rob
 * `data/`: Contains the `Crop_recommendation.csv` dataset.
 * `notebooks/`: Comprehensive Jupyter Notebook with visualizations.
 * `README.md`: Project documentation.
-
-## 👤 Author
-**Your Name** * **LinkedIn:** [Your Profile Link Here]  
-* **Portfolio:** [Your Portfolio Link Here]
-
----
-*If you find this project helpful, please consider giving it a ⭐ on GitHub!*
